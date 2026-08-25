@@ -1,268 +1,169 @@
+An interactive **Custom Ramen Noodle Glyph Visualizer** brings your bespoke Tableau polygon data art directly to life on the web.
+
+### How the Data Encodings are Calculated
+
+* **Bowl Color / Base:** Encodes the **Release Era** (Early Classic 1980s, 90s Golden Era, 2000s Modern Peak, 2010s+ Legacy).
+* **Noodle Strands ($X, Y$ Sine-Wave Polygons):** Wave count, density, and strand length scale dynamically with **Film Runtime** (86 min to 137 min).
+* **Topping Type (Director Identity):**
+* *Hayao Miyazaki:* Norimaki Seaweed sheet & green spring onion scatter.
+* *Isao Takahata:* Roasted Chashu slice & bamboo shoots (Menma).
+* *Hiromasa Yonebayashi / Yoshifumi Kondo:* Steamed Bok Choy & sesame scatter.
+
+
+* **Ajitsuke Tamago (Egg Slice Percentage):** Cut angle / fill percentage of the soft-boiled egg yolk directly maps to the **Rotten Tomatoes Score** (e.g., 100% full round yolk vs. partial wedge).
+* **Narutomaki (Fish Cake Swirl):** The spiral radius and decorative position indicate high-grossing box office tiers.
+
+---
+
+---
+
+### Updated Code to Add to Your GitHub Repository (`index.html`)
+
+To add this complete interactive **Ramen Noodle Glyph Engine** directly to your live presentation website on GitHub, replace your `index.html` with this version:
+
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>The Cinematic Tapestry of Studio Ghibli</title>
+  <title>The Ghibli Noodle Bar - Custom Glyph Analytics</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
     :root {
-      --bg-warm: #F7F5F0;
+      --bg: #F7F5F0;
       --card-bg: #FFFFFF;
-      --forest-green: #2D5A43;
-      --forest-light: #EBF2ED;
-      --lantern-red: #C24D43;
-      --ocean-blue: #3A6B7C;
+      --forest: #2D5A43;
+      --lantern: #C24D43;
+      --ocean: #3A6B7C;
       --gold: #D4A343;
-      --text-main: #1F2937;
-      --text-muted: #6B7280;
+      --text: #1F2937;
       --border: #E5E1D8;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
-      font-family: 'Plus Jakarta Sans', -apple-system, sans-serif;
-      background-color: var(--bg-warm);
-      color: var(--text-main);
-      padding: 32px 24px;
-      line-height: 1.5;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      padding: 32px 20px;
     }
     .container { max-width: 1200px; margin: 0 auto; }
     
-    /* Header */
-    .header {
+    header {
       border-bottom: 2px solid var(--border);
-      padding-bottom: 20px;
-      margin-bottom: 28px;
+      padding-bottom: 16px;
+      margin-bottom: 24px;
       display: flex;
       justify-content: space-between;
       align-items: flex-end;
       flex-wrap: wrap;
-      gap: 16px;
+      gap: 12px;
     }
-    .header-title h1 {
-      font-family: 'Cinzel', serif;
-      font-size: 32px;
-      letter-spacing: 0.5px;
-      color: var(--forest-green);
-    }
-    .header-title p {
-      color: var(--text-muted);
-      font-size: 15px;
-      margin-top: 4px;
-    }
-    .author-badge {
-      font-size: 13px;
-      background: var(--forest-light);
-      color: var(--forest-green);
-      padding: 6px 14px;
-      border-radius: 20px;
-      font-weight: 600;
-      border: 1px solid rgba(45, 90, 67, 0.2);
-    }
-
-    /* KPI Grid */
-    .kpi-grid {
+    h1 { font-family: 'Cinzel', serif; font-size: 28px; color: var(--forest); }
+    .subtitle { color: #6B7280; font-size: 14px; margin-top: 4px; }
+    
+    /* Anatomy Banner */
+    .anatomy-box {
+      background: #FFFFFF;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 24px;
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
       gap: 16px;
-      margin-bottom: 28px;
-    }
-    .kpi-card {
-      background: var(--card-bg);
-      border: 1px solid var(--border);
-      padding: 18px 20px;
-      border-radius: 12px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.02);
-    }
-    .kpi-card .kpi-label {
-      font-size: 12px;
-      text-transform: uppercase;
-      letter-spacing: 0.8px;
-      color: var(--text-muted);
-      font-weight: 600;
-    }
-    .kpi-card .kpi-value {
-      font-size: 26px;
-      font-weight: 700;
-      color: var(--forest-green);
-      margin-top: 6px;
-    }
-    .kpi-card .kpi-sub {
-      font-size: 12px;
-      color: var(--gold);
-      font-weight: 600;
-      margin-top: 2px;
-    }
-
-    /* Nav Tabs */
-    .nav-tabs {
-      display: flex;
-      gap: 10px;
-      margin-bottom: 20px;
-      border-bottom: 1px solid var(--border);
-      padding-bottom: 10px;
-    }
-    .tab-btn {
-      background: none;
-      border: none;
-      padding: 8px 18px;
-      border-radius: 8px;
-      font-size: 14px;
-      font-weight: 600;
-      color: var(--text-muted);
-      cursor: pointer;
-      transition: all 0.2s;
-    }
-    .tab-btn.active {
-      background: var(--forest-green);
-      color: #fff;
-    }
-
-    /* Controls */
-    .filters-bar {
-      display: flex;
-      gap: 16px;
-      background: var(--card-bg);
-      padding: 16px 20px;
-      border-radius: 12px;
-      border: 1px solid var(--border);
-      margin-bottom: 24px;
-      flex-wrap: wrap;
-      align-items: center;
-    }
-    .control-item { display: flex; flex-direction: column; gap: 6px; font-size: 12px; font-weight: 600; }
-    select, input[type="text"] {
-      padding: 8px 14px;
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      font-size: 14px;
-      background: #fafafa;
-    }
-
-    /* Main Visual Layout */
-    .view-panel { display: none; }
-    .view-panel.active { display: block; }
-    .chart-box {
-      background: var(--card-bg);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 24px;
-      height: 440px;
-      margin-bottom: 24px;
-    }
-
-    /* Filmography Cards Grid */
-    .films-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      gap: 20px;
-    }
-    .film-card {
-      background: var(--card-bg);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 20px;
-      transition: transform 0.2s, box-shadow 0.2s;
-      cursor: pointer;
-      position: relative;
-    }
-    .film-card:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 8px 24px rgba(0,0,0,0.06);
-      border-color: var(--forest-green);
-    }
-    .film-year { font-size: 12px; color: var(--gold); font-weight: 700; }
-    .film-title { font-size: 18px; font-weight: 700; color: var(--text-main); margin: 4px 0 8px; }
-    .film-dir { font-size: 13px; color: var(--ocean-blue); font-weight: 500; margin-bottom: 12px; }
-    .film-theme {
-      font-size: 12px;
-      background: var(--forest-light);
-      color: var(--forest-green);
-      display: inline-block;
-      padding: 4px 10px;
-      border-radius: 6px;
-      margin-bottom: 14px;
-      font-weight: 600;
-    }
-    .score-row {
-      display: flex;
-      justify-content: space-between;
-      border-top: 1px dashed var(--border);
-      padding-top: 12px;
       font-size: 13px;
     }
-    .score-item strong { color: var(--forest-green); }
+    .anatomy-item strong { display: block; color: var(--forest); margin-bottom: 4px; font-size: 14px; }
 
-    /* Takeaways / Slide Notes */
-    .takeaways-grid {
+    /* Filters */
+    .filters {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 24px;
+      background: #fff;
+      padding: 14px 18px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      flex-wrap: wrap;
+    }
+    .filter-group { display: flex; flex-direction: column; gap: 4px; font-size: 12px; font-weight: 600; }
+    select, input { padding: 6px 12px; border: 1px solid var(--border); border-radius: 6px; font-size: 13px; }
+
+    /* Glyph Grid */
+    .glyph-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
       gap: 20px;
     }
-    .takeaway-card {
-      background: var(--card-bg);
-      border-left: 4px solid var(--forest-green);
-      padding: 20px;
-      border-radius: 0 12px 12px 0;
-      border-top: 1px solid var(--border);
-      border-right: 1px solid var(--border);
-      border-bottom: 1px solid var(--border);
+    .glyph-card {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px;
+      text-align: center;
+      transition: transform 0.2s, box-shadow 0.2s;
+      cursor: pointer;
     }
-    .takeaway-card h3 { font-size: 17px; margin-bottom: 8px; color: var(--forest-green); }
-    .takeaway-card p { font-size: 14px; color: var(--text-muted); line-height: 1.6; }
+    .glyph-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 10px 20px rgba(0,0,0,0.06);
+      border-color: var(--forest);
+    }
+    .glyph-card h3 { font-size: 16px; margin-top: 10px; color: var(--text); }
+    .glyph-card p { font-size: 12px; color: #6B7280; }
+    .glyph-card .stats-pill {
+      margin-top: 10px;
+      display: inline-flex;
+      gap: 8px;
+      font-size: 11px;
+      background: #F3F4F6;
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-weight: 600;
+    }
   </style>
 </head>
 <body>
 
 <div class="container">
-  <!-- Header -->
-  <div class="header">
-    <div class="header-title">
-      <h1>The Cinematic Tapestry of Ghibli</h1>
-      <p>A Data-Journalism Showcase of Critical Acclaim, Economics & Themes</p>
+  <header>
+    <div>
+      <h1>The Ghibli Noodle Bar</h1>
+      <p class="subtitle">Custom Algorithmic Ramen Glyphs (Polygons, Strands & Toppings)</p>
     </div>
-    <div class="author-badge">Designed for Presentation</div>
-  </div>
+    <div style="font-size: 12px; font-weight: 700; color: var(--lantern); background: #FDF2F2; padding: 6px 12px; border-radius: 20px; border: 1px solid rgba(194,77,67,0.2);">
+      Data Art Visualizer
+    </div>
+  </header>
 
-  <!-- Top KPIs -->
-  <div class="kpi-grid">
-    <div class="kpi-card">
-      <div class="kpi-label">Analyzed Films</div>
-      <div class="kpi-value" id="kpi-films">15</div>
-      <div class="kpi-sub">Studio Masterworks</div>
+  <!-- Glyph Anatomy Legend -->
+  <div class="anatomy-box">
+    <div class="anatomy-item">
+      <strong>🥣 Bowl Base = Release Era</strong>
+      80s (Navy Terracotta), 90s (Sage Green), 2000s (Crimson Ceramic), 2010s+ (Onyx Black).
     </div>
-    <div class="kpi-card">
-      <div class="kpi-label">Cumulative Box Office</div>
-      <div class="kpi-value" id="kpi-box">$1,638M</div>
-      <div class="kpi-sub">Global Theatrical Gross</div>
+    <div class="anatomy-item">
+      <strong>🍜 Noodle Waves = Runtime</strong>
+      Procedural sine-curve polygon strands increase in density and length with film duration.
     </div>
-    <div class="kpi-card">
-      <div class="kpi-label">Avg Critical Score</div>
-      <div class="kpi-value" id="kpi-score">94.8%</div>
-      <div class="kpi-sub">Rotten Tomatoes Average</div>
+    <div class="anatomy-item">
+      <strong>🥚 Egg Slice = Rotten Tomatoes %</strong>
+      Yolk radius and golden coverage scale with critical percentage (100% = full sunburst).
     </div>
-    <div class="kpi-card">
-      <div class="kpi-label">Highest Grossing</div>
-      <div class="kpi-value" style="font-size: 20px;">Spirited Away</div>
-      <div class="kpi-sub">$395M Global (2001)</div>
+    <div class="anatomy-item">
+      <strong>🍥 Garnishes = Director</strong>
+      Miyazaki (Nori sheet & scallions), Takahata (Chashu pork & bamboo), Others (Bok choy).
     </div>
   </div>
 
-  <!-- Navigation -->
-  <div class="nav-tabs">
-    <button class="tab-btn active" onclick="switchView('visuals')">📈 Interactive Scatter Matrix</button>
-    <button class="tab-btn" onclick="switchView('gallery')">🎬 Filmography & Themes</button>
-    <button class="tab-btn" onclick="switchView('slides')">🎙️ Presentation Insights</button>
-  </div>
-
-  <!-- Controls -->
-  <div class="filters-bar">
-    <div class="control-item">
-      <label>Filter by Director</label>
-      <select id="dir-filter" onchange="applyFilters()">
+  <!-- Filters -->
+  <div class="filters">
+    <div class="filter-group">
+      <label>Director</label>
+      <select id="dir-select" onchange="render()">
         <option value="All">All Directors</option>
         <option value="Hayao Miyazaki">Hayao Miyazaki</option>
         <option value="Isao Takahata">Isao Takahata</option>
@@ -270,169 +171,154 @@
         <option value="Hiromasa Yonebayashi">Hiromasa Yonebayashi</option>
       </select>
     </div>
-    <div class="control-item">
-      <label>Search Canon</label>
-      <input type="text" id="search-box" placeholder="e.g. Totoro, Nature, War..." oninput="applyFilters()" />
+    <div class="filter-group">
+      <label>Era</label>
+      <select id="era-select" onchange="render()">
+        <option value="All">All Eras</option>
+        <option value="80s Classic">80s Classic</option>
+        <option value="90s Golden">90s Golden</option>
+        <option value="2000s Peak">2000s Peak</option>
+        <option value="2010s+ Legacy">2010s+ Legacy</option>
+      </select>
     </div>
   </div>
 
-  <!-- Tab 1: Visuals -->
-  <div id="view-visuals" class="view-panel active">
-    <div class="chart-box">
-      <canvas id="mainChart"></canvas>
-    </div>
-  </div>
-
-  <!-- Tab 2: Gallery -->
-  <div id="view-gallery" class="view-panel">
-    <div class="films-grid" id="films-grid"></div>
-  </div>
-
-  <!-- Tab 3: Presentation Takeaways -->
-  <div id="view-slides" class="view-panel">
-    <div class="takeaways-grid">
-      <div class="takeaway-card">
-        <h3>1. The 1997 Inflection Point</h3>
-        <p>Before <em>Princess Mononoke</em> (1997), Ghibli was a revered domestic phenomenon in Japan ($16M–$50M box office). Mononoke broke global ground, paving the way for <em>Spirited Away</em> ($395M) to become the definitive international milestone.</p>
-      </div>
-      <div class="takeaway-card">
-        <h3>2. Miyazaki vs. Takahata Dichotomy</h3>
-        <p>While Hayao Miyazaki focused on soaring aviation, animism, and fantastical odysseys with immense commercial return, co-founder Isao Takahata crafted uncompromising, emotionally visceral masterworks (<em>Grave of the Fireflies</em>, <em>Princess Kaguya</em>) that earned 100% critical acclaim.</p>
-      </div>
-      <div class="takeaway-card">
-        <h3>3. Enduring Critical Resilience</h3>
-        <p>Across four decades, Ghibli holds an average critic score above 94%, maintaining hand-drawn artistic integrity in an industry that almost entirely shifted to 3D CGI animation.</p>
-      </div>
-    </div>
-  </div>
+  <!-- Main Glyph Grid -->
+  <div class="glyph-grid" id="grid"></div>
 </div>
 
 <script>
-  const data = [
-    { title: "Castle in the Sky", year: 1986, director: "Hayao Miyazaki", imdb: 8.0, rt: 96, box: 16, theme: "Lost Civilizations & Flight" },
-    { title: "Grave of the Fireflies", year: 1988, director: "Isao Takahata", imdb: 8.5, rt: 100, box: 51, theme: "War, Innocence & Grief" },
-    { title: "My Neighbor Totoro", year: 1988, director: "Hayao Miyazaki", imdb: 8.1, rt: 93, box: 45, theme: "Pastoral Animism & Childhood" },
-    { title: "Kiki's Delivery Service", year: 1989, director: "Hayao Miyazaki", imdb: 7.8, rt: 98, box: 41, theme: "Burnout & Independence" },
-    { title: "Only Yesterday", year: 1991, director: "Isao Takahata", imdb: 7.6, rt: 100, box: 19, theme: "Rural Nostalgia & Memory" },
-    { title: "Porco Rosso", year: 1992, director: "Hayao Miyazaki", imdb: 7.7, rt: 95, box: 59, theme: "Disillusionment & Aviation" },
-    { title: "Whisper of the Heart", year: 1995, director: "Yoshifumi Kondo", imdb: 7.9, rt: 94, box: 35, theme: "Artistic Calling & First Love" },
-    { title: "Princess Mononoke", year: 1997, director: "Hayao Miyazaki", imdb: 8.3, rt: 93, box: 170, theme: "Man vs Nature & Moral Ambiguity" },
-    { title: "Spirited Away", year: 2001, director: "Hayao Miyazaki", imdb: 8.6, rt: 97, box: 395, theme: "Identity & Liminal Fantasy" },
-    { title: "Howl's Moving Castle", year: 2004, director: "Hayao Miyazaki", imdb: 8.2, rt: 87, box: 236, theme: "Pacifism & Magical Metamorphosis" },
-    { title: "Ponyo", year: 2008, director: "Hayao Miyazaki", imdb: 7.6, rt: 91, box: 205, theme: "Ocean Ecology & Innocence" },
-    { title: "The Secret World of Arrietty", year: 2010, director: "Hiromasa Yonebayashi", imdb: 7.6, rt: 95, box: 149, theme: "Perspective & Borrowers" },
-    { title: "The Wind Rises", year: 2013, director: "Hayao Miyazaki", imdb: 7.7, rt: 88, box: 136, theme: "Creative Passion & History" },
-    { title: "The Tale of the Princess Kaguya", year: 2013, director: "Isao Takahata", imdb: 8.0, rt: 100, box: 27, theme: "Autonomy & Folk Artistry" },
-    { title: "The Boy and the Heron", year: 2023, director: "Hayao Miyazaki", imdb: 7.5, rt: 97, box: 173, theme: "Grief, Rebuilding & Legacy" }
+  const films = [
+    { title: "Spirited Away", year: 2001, director: "Hayao Miyazaki", era: "2000s Peak", runtime: 125, rt: 97, box: 395, imdb: 8.6 },
+    { title: "Princess Mononoke", year: 1997, director: "Hayao Miyazaki", era: "90s Golden", runtime: 134, rt: 93, box: 170, imdb: 8.3 },
+    { title: "Grave of the Fireflies", year: 1988, director: "Isao Takahata", era: "80s Classic", runtime: 89, rt: 100, box: 51, imdb: 8.5 },
+    { title: "My Neighbor Totoro", year: 1988, director: "Hayao Miyazaki", era: "80s Classic", runtime: 86, rt: 93, box: 45, imdb: 8.1 },
+    { title: "Howl's Moving Castle", year: 2004, director: "Hayao Miyazaki", era: "2000s Peak", runtime: 119, rt: 87, box: 236, imdb: 8.2 },
+    { title: "The Tale of the Princess Kaguya", year: 2013, director: "Isao Takahata", era: "2010s+ Legacy", runtime: 137, rt: 100, box: 27, imdb: 8.0 },
+    { title: "Whisper of the Heart", year: 1995, director: "Yoshifumi Kondo", era: "90s Golden", runtime: 111, rt: 94, box: 35, imdb: 7.9 },
+    { title: "The Secret World of Arrietty", year: 2010, director: "Hiromasa Yonebayashi", era: "2010s+ Legacy", runtime: 94, rt: 95, box: 149, imdb: 7.6 },
+    { title: "Kiki's Delivery Service", year: 1989, director: "Hayao Miyazaki", era: "80s Classic", runtime: 103, rt: 98, box: 41, imdb: 7.8 },
+    { title: "The Wind Rises", year: 2013, director: "Hayao Miyazaki", era: "2010s+ Legacy", runtime: 126, rt: 88, box: 136, imdb: 7.7 }
   ];
 
-  let chartInstance = null;
+  const eraColors = {
+    "80s Classic": { bowl: "#2B4C6F", rim: "#1D3550", broth: "#D9A05B" },
+    "90s Golden": { bowl: "#2D5A43", rim: "#1E3D2D", broth: "#C98A4B" },
+    "2000s Peak": { bowl: "#C24D43", rim: "#8B2E26", broth: "#D49755" },
+    "2010s+ Legacy": { bowl: "#2C3437", rim: "#191E20", broth: "#B87F42" }
+  };
 
-  function initChart(dataset) {
-    if (chartInstance) chartInstance.destroy();
-    const ctx = document.getElementById("mainChart").getContext("2d");
-    
-    chartInstance = new Chart(ctx, {
-      type: 'bubble',
-      data: {
-        datasets: [{
-          label: 'Films (Radius = Box Office Gross)',
-          data: dataset.map(d => ({
-            x: d.year,
-            y: d.imdb,
-            r: Math.max(6, Math.sqrt(d.box) * 1.6),
-            film: d
-          })),
-          backgroundColor: 'rgba(45, 90, 67, 0.65)',
-          borderColor: '#2D5A43',
-          borderWidth: 1.5
-        }]
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-          title: {
-            display: true,
-            text: 'Release Timeline vs. IMDb Score (Bubble Size = Global Box Office)',
-            font: { size: 14, family: 'Plus Jakarta Sans', weight: '600' }
-          },
-          tooltip: {
-            callbacks: {
-              label: (ctx) => `${ctx.raw.film.title} (${ctx.raw.film.year}): IMDb ${ctx.raw.film.imdb} | Box Office: $${ctx.raw.film.box}M`
-            }
-          }
-        },
-        scales: {
-          x: {
-            title: { display: true, text: 'Release Year' },
-            grid: { color: '#E5E1D8' }
-          },
-          y: {
-            min: 7.2,
-            max: 9.0,
-            title: { display: true, text: 'IMDb Rating' },
-            grid: { color: '#E5E1D8' }
-          }
-        }
-      }
-    });
+  function createRamenSVG(f) {
+    const colors = eraColors[f.era];
+    const strandCount = Math.round((f.runtime - 70) / 7); // runtime scales noodles
+    const yolkRadius = 7 + (f.rt / 100) * 8; // RT scales yolk
+
+    // Generate noodle wave paths
+    let noodlePaths = "";
+    for(let i = 0; i < strandCount; i++) {
+      const yOffset = 75 + (i * 3.5);
+      const amp = 3 + (i % 3);
+      noodlePaths += `<path d="M 45 ${yOffset} Q 70 ${yOffset - amp}, 95 ${yOffset} T 145 ${yOffset} T 155 ${yOffset}" fill="none" stroke="#FDE68A" stroke-width="2.6" stroke-linecap="round"/>`;
+    }
+
+    // Garnishes by director
+    let toppings = "";
+    if (f.director === "Hayao Miyazaki") {
+      // Nori sheet + Scallions
+      toppings += `
+        <rect x="42" y="52" width="22" height="28" rx="2" transform="rotate(-15 42 52)" fill="#1A2E22"/>
+        <circle cx="120" cy="85" r="2.5" fill="#48BB78"/>
+        <circle cx="126" cy="88" r="2.5" fill="#38A169"/>
+        <circle cx="122" cy="94" r="2" fill="#2F855A"/>
+      `;
+    } else if (f.director === "Isao Takahata") {
+      // Chashu Pork + Bamboo
+      toppings += `
+        <ellipse cx="60" cy="72" rx="16" ry="11" fill="#C57D5D" stroke="#8C4A2D" stroke-width="1.5" transform="rotate(10 60 72)"/>
+        <rect x="125" y="70" width="18" height="4" rx="1" fill="#D69E2E" transform="rotate(-20 125 70)"/>
+        <rect x="128" y="76" width="18" height="4" rx="1" fill="#D69E2E" transform="rotate(-15 128 76)"/>
+      `;
+    } else {
+      // Bok Choy leaf
+      toppings += `<path d="M 45 60 Q 55 50 68 62 Q 60 78 45 60 Z" fill="#2F855A" stroke="#22543D" stroke-width="1"/>`;
+    }
+
+    // Narutomaki Fishcake
+    toppings += `
+      <g transform="translate(130, 80)">
+        <circle cx="0" cy="0" r="10" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1"/>
+        <path d="M -4 -2 Q 0 -6 4 -2 Q 6 3 0 5 Q -5 4 -3 1" fill="none" stroke="#ED64A6" stroke-width="2" stroke-linecap="round"/>
+      </g>
+    `;
+
+    // Egg slice with RT yolk
+    const egg = `
+      <g transform="translate(90, 68)">
+        <ellipse cx="0" cy="0" rx="14" ry="18" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1"/>
+        <circle cx="1" cy="2" r="${yolkRadius}" fill="#F6AD55" stroke="#DD6B20" stroke-width="1.2"/>
+        <circle cx="3" cy="0" r="${yolkRadius * 0.4}" fill="#FBD38D"/>
+      </g>
+    `;
+
+    return `
+      <svg viewBox="0 0 200 160" width="100%" height="140">
+        <!-- Steam -->
+        <path d="M 85 30 Q 80 20 85 10" fill="none" stroke="rgba(200,200,200,0.4)" stroke-width="2" stroke-linecap="round"/>
+        <path d="M 105 32 Q 110 22 105 12" fill="none" stroke="rgba(200,200,200,0.4)" stroke-width="2" stroke-linecap="round"/>
+        
+        <!-- Bowl Outer -->
+        <path d="M 30 65 C 30 130, 170 130, 170 65 Z" fill="${colors.bowl}"/>
+        <ellipse cx="100" cy="65" rx="70" ry="18" fill="${colors.rim}"/>
+        
+        <!-- Broth -->
+        <ellipse cx="100" cy="67" rx="63" ry="14" fill="${colors.broth}"/>
+        
+        <!-- Noodles -->
+        ${noodlePaths}
+        
+        <!-- Toppings -->
+        ${toppings}
+        ${egg}
+        
+        <!-- Chopsticks resting -->
+        <line x1="20" y1="52" x2="175" y2="60" stroke="#8B5A2B" stroke-width="3" stroke-linecap="round"/>
+        <line x1="20" y1="48" x2="175" y2="56" stroke="#5C3A1E" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+    `;
   }
 
-  function renderCards(dataset) {
-    const grid = document.getElementById("films-grid");
+  function render() {
+    const dir = document.getElementById("dir-select").value;
+    const era = document.getElementById("era-select").value;
+    const grid = document.getElementById("grid");
     grid.innerHTML = "";
-    dataset.forEach(film => {
+
+    const filtered = films.filter(f => {
+      return (dir === "All" || f.director === dir) && (era === "All" || f.era === era);
+    });
+
+    filtered.forEach(f => {
       const card = document.createElement("div");
-      card.className = "film-card";
+      card.className = "glyph-card";
       card.innerHTML = `
-        <div class="film-year">${film.year}</div>
-        <div class="film-title">${film.title}</div>
-        <div class="film-dir">Directed by ${film.director}</div>
-        <div class="film-theme">${film.theme}</div>
-        <div class="score-row">
-          <span class="score-item">IMDb: <strong>${film.imdb}</strong></span>
-          <span class="score-item">Rotten Tomatoes: <strong>${film.rt}%</strong></span>
-          <span class="score-item">Gross: <strong>$${film.box}M</strong></span>
+        ${createRamenSVG(f)}
+        <h3>${f.title} (${f.year})</h3>
+        <p>${f.director} • ${f.era}</p>
+        <div class="stats-pill">
+          <span>⏱️ ${f.runtime}m</span>
+          <span>🍅 ${f.rt}% RT</span>
+          <span>⭐ ${f.imdb}</span>
         </div>
       `;
       grid.appendChild(card);
     });
   }
 
-  function applyFilters() {
-    const dir = document.getElementById("dir-filter").value;
-    const query = document.getElementById("search-box").value.toLowerCase();
-
-    const filtered = data.filter(d => {
-      const matchesDir = dir === "All" || d.director === dir;
-      const matchesQuery = d.title.toLowerCase().includes(query) || d.theme.toLowerCase().includes(query);
-      return matchesDir && matchesQuery;
-    });
-
-    initChart(filtered);
-    renderCards(filtered);
-  }
-
-  function switchView(viewName) {
-    document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
-    document.querySelectorAll(".view-panel").forEach(p => p.classList.remove("active"));
-
-    if (viewName === 'visuals') {
-      document.querySelectorAll(".tab-btn")[0].classList.add("active");
-      document.getElementById("view-visuals").classList.add("active");
-    } else if (viewName === 'gallery') {
-      document.querySelectorAll(".tab-btn")[1].classList.add("active");
-      document.getElementById("view-gallery").classList.add("active");
-    } else {
-      document.querySelectorAll(".tab-btn")[2].classList.add("active");
-      document.getElementById("view-slides").classList.add("active");
-    }
-  }
-
-  // Initial render
-  initChart(data);
-  renderCards(data);
+  render();
 </script>
 </body>
 </html>
+
+```
+
+Commit this updated code directly into your repository's `index.html` on GitHub to have your **Custom Ramen Glyph Visualizer** live and interactive for your presentation.
